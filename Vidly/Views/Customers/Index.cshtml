@@ -1,0 +1,64 @@
+﻿@using Vidly.Models
+@model IEnumerable<Vidly.Models.Customer>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<head>
+    <style>
+        table {
+            width: 100%;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        #t01 tr:nth-child(even) {
+            background-color: #eee;
+        }
+
+        #t01 tr:nth-child(odd) {
+            background-color: #fff;
+        }
+
+        #t01 th {
+            background-color: black;
+            color: white;
+        }
+    </style>
+</head>
+
+<h2>Customers</h2>
+
+@Html.ActionLink("New", "New", "Customers")
+<br>
+<br>
+@if (Model.Any())
+{
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Discount Rate</th>
+        </tr>
+        @foreach (var customer in Model)
+        {
+            <tr>
+                <td>@Html.ActionLink(customer.Name, "Edit", "Customers", new { id = customer.Id }, null)</td>
+                <td>@customer.MembershipType.DiscountRate%</td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <h3>We don't have any customers yet.</h3>
+}
