@@ -1,8 +1,8 @@
-﻿ 
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq; 
-using System.Web.Http; 
+using System.Linq;
+using System.Web.Http;
 using AutoMapper;
 using Vidly.Dtos;
 using Vidly.Models;
@@ -12,15 +12,17 @@ namespace Vidly.Controllers.Api
     public class MoviesController : ApiController
     {
         private readonly ApplicationDbContext _context;
+
         public MoviesController()
         {
             _context = new ApplicationDbContext();
         }
+
         public IHttpActionResult GetMovies()
         {
             var movies = _context.Movies.Include(m => m.Genre).ToList();
-            var dtos = Mapper.Map<List<MovieDto>>(movies); //TODO NOT WORKING
-            return Ok(movies);
+            var dtos = Mapper.Map<List<MovieDto>>(movies);
+            return Ok(dtos);
         }
 
 
@@ -44,7 +46,9 @@ namespace Vidly.Controllers.Api
             {
                 return BadRequest("Movie Format is not Right");
             }
+
             var movie = Mapper.Map<Movie>(movieDto);
+            movie.AddedDate = DateTime.Now;
             _context.Movies.Add(movie);
             _context.SaveChanges();
 
@@ -73,7 +77,7 @@ namespace Vidly.Controllers.Api
 
             _context.SaveChanges();
 
-            return Ok("updated!!");
+            return Ok(new {message = "updated!!"});
         }
 
 
@@ -87,9 +91,9 @@ namespace Vidly.Controllers.Api
             }
 
             _context.Movies.Remove(movie);
-            
+            _context.SaveChanges();
+
             return Ok("Deleted");
         }
-
     }
 }
