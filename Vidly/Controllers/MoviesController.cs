@@ -8,6 +8,7 @@ using Vidly.ViewModels;
 
 namespace Vidly.Controllers
 {
+    [Authorize]
     public class MoviesController : Controller
     {
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
@@ -21,7 +22,7 @@ namespace Vidly.Controllers
         public ActionResult Index()
         {
             var movies = _context.Movies.Include(m => m.Genre).ToList();
-            return View(movies);
+            return User.IsInRole(Roles.CanManageMovies) ? View("AdminIndex", movies) : View(movies);
         }
 
         public ActionResult Details(int id)
@@ -35,6 +36,8 @@ namespace Vidly.Controllers
             return View(movie);
         }
 
+
+        [Authorize(Roles = Roles.CanManageMovies)]
         public ActionResult New()
         {
             var genres = _context.Genres.ToList();
@@ -45,6 +48,7 @@ namespace Vidly.Controllers
             return View("MoviesForm", viewModel);
         }
 
+        [Authorize(Roles = Roles.CanManageMovies)]
         public ActionResult Edit(int id)
         {
             var movie = _context.Movies.FirstOrDefault(m => m.Id == id);
@@ -58,6 +62,7 @@ namespace Vidly.Controllers
             return View("MoviesForm", viewModel);
         }
 
+        [Authorize(Roles = Roles.CanManageMovies)]
         [HttpPost]
         public ActionResult Save(Movie movie)
         {

@@ -7,7 +7,9 @@
 
 <head>
     <style>
-        table { width: 100%; }
+        table {
+            width: 100%;
+        }
 
         table, th, td {
             border: 1px solid black;
@@ -19,9 +21,13 @@
             text-align: left;
         }
 
-        #t01 tr:nth-child(even) { background-color: #eee; }
+        #t01 tr:nth-child(even) {
+            background-color: #eee;
+        }
 
-        #t01 tr:nth-child(odd) { background-color: #fff; }
+        #t01 tr:nth-child(odd) {
+            background-color: #fff;
+        }
 
         #t01 th {
             background-color: black;
@@ -31,6 +37,7 @@
 </head>
 
 <h2>Movies</h2>
+@Html.ActionLink("New", "New", "Movies")
 
 @if (Model.Any())
 {
@@ -42,7 +49,7 @@
         @foreach (var movie in Model)
         {
             <tr>
-                <td>@movie.Name</td>
+                <td>@Html.ActionLink(movie.Name, "Edit", "Movies", new { Id = movie.Id }, null)</td>
                 <td>@movie.Genre.Name</td>
 
             </tr>

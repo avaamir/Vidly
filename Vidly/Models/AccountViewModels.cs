@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Vidly.Models
@@ -64,6 +65,15 @@ namespace Vidly.Models
 
     public class RegisterViewModel
     {
+        [Required]
+        [Display(Name = "Phone Number")]
+        public string Phone { get; set; }
+
+
+        [Required]
+        [Display(Name = "Driving License")]
+        public string DrivingLicense { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
